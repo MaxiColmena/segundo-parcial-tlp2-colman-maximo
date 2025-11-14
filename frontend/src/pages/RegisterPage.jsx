@@ -1,10 +1,63 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "../hooks/useForm";
+import { Loading } from "../components/Loading";
 
 export const RegisterPage = () => {
   // TODO: Integrar lógica de registro aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
 
+   const { formState, handleChange } = useForm({
+    username: "",
+    email: "",
+    password: "",
+    name: "",
+    lastname: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username: formState.username,
+          email: formState.email,
+          password: formState.password,
+          name: formState.name,
+          lastname: formState.lastname,
+        }),
+      });
+
+      if (response.ok) {
+        navigate("/home");
+      } else {
+        const data = await response.json();
+        setError(data.message || "Error al crear la cuenta. Intenta nuevamente.");
+      }
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      setError("Error al conectar con el servidor. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
       <div className="max-w-lg w-full bg-white rounded-lg shadow-xl p-8">
@@ -19,7 +72,7 @@ export const RegisterPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -31,6 +84,8 @@ export const RegisterPage = () => {
               type="text"
               id="username"
               name="username"
+              value={formState.username}
+              onChange={handleChange}
               placeholder="Elige un nombre de usuario"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
@@ -48,6 +103,8 @@ export const RegisterPage = () => {
               type="email"
               id="email"
               name="email"
+              value={formState.email}
+              onChange={handleChange}
               placeholder="tu@email.com"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
@@ -65,6 +122,8 @@ export const RegisterPage = () => {
               type="password"
               id="password"
               name="password"
+              value={formState.password}
+              onChange={handleChange}
               placeholder="Crea una contraseña segura"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
@@ -82,6 +141,8 @@ export const RegisterPage = () => {
               type="text"
               id="name"
               name="name"
+              value={formState.name}
+              onChange={handleChange}   
               placeholder="Tu nombre"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
@@ -99,6 +160,8 @@ export const RegisterPage = () => {
               type="text"
               id="lastname"
               name="lastname"
+              value={formState.lastname}
+              onChange={handleChange}
               placeholder="Tu apellido"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required

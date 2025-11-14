@@ -1,7 +1,32 @@
+import { useState, useEffect } from "react";
+import { Loading } from "../components/Loading";
+
 export const HomePage = () => {
   // TODO: Integrar lógica para obtener superhéroes desde la API
   // TODO: Implementar useState para almacenar la lista de superhéroes
   // TODO: Implementar función para recargar superhéroes
+
+   const [userName, setUserName] = useState("");
+  // const [superheroes, setSuperheroes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [reloading, setReloading] = useState(false);
+  const [error, setError] = useState("");
+
+    const fetchUserProfile = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/profile", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserName(data.name || "");
+      }
+    } catch (error) {
+      console.error("Error obteniendo perfil del usuario:", error);
+    }
+  };
 
   // Datos de ejemplo para las cards
   const superheroes = [
