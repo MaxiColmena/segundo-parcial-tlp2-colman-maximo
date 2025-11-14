@@ -1,16 +1,37 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# Segundo Parcial - Galeria de Superhéroes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Descripción
 
-## React Compiler
+Aplicación web desarrollada con React y Vite que permite a los usuarios registrarse, iniciar sesión y visualizar una galería de superhéroes. La aplicación incluye autenticación basada en cookies, rutas protegidas y una interfaz moderna para explorar información de superhéroes.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+La aplicación se conecta a un backend en Node.js que proporciona endpoints para autenticación y gestión de superhéroes. Los usuarios pueden registrarse, iniciar sesión y acceder a una galería dinámica de superhéroes que se actualiza con cada recarga.
 
-## Expanding the ESLint configuration
+## Características
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Autenticación de usuarios**: Sistema de registro e inicio de sesión
+- **Rutas protegidas**: Acceso restringido a usuarios autenticados
+- **Galería de superhéroes**: Visualización de superhéroes con imágenes y nombres
+- **Interfaz moderna**: Diseño responsive con Tailwind CSS
+- **Gestión de sesiones**: Autenticación basada en cookies
+- **Recarga dinámica**: Actualización de la lista de superhéroes con orden aleatorio
+
+## Instalación
+
+1. Navega a la carpeta del frontend:
+```bash
+cd frontend
+```
+
+2. Instala las dependencias:
+```bash
+npm install
+```
+
+## Uso
+
+### Iniciar el servidor de desarrollo
+
+```bash
+npm run dev
