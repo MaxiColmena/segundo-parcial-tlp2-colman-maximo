@@ -11,8 +11,26 @@ export const Navbar = () => {
   const [userName, setUserName] = useState("Usuario"); // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
   const navigate = useNavigate ();
 
-  useEffect(()=> {
-  })
+useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/profile", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserName(data.name || "Usuario");
+        }
+      } catch (error) {
+        console.error("Error obteniendo perfil del usuario:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+  
 
     const handleLogout = async() => {
       try {
@@ -23,7 +41,9 @@ export const Navbar = () => {
         if (response.ok) {
           onLogout();
           navigate('/login');
-        }
+        } else {
+        console.error("Error al cerrar sesión");
+      }
       } catch (error) {
       console.log('Errror al cerrar sesión:', error);
       }
@@ -41,9 +61,7 @@ export const Navbar = () => {
           </span>
 
           <button
-            onClick={() => {
-              // TODO: Implementar handleLogout aquí
-            }}
+            onClick={() => {handleLogout}}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
             Cerrar Sesión
