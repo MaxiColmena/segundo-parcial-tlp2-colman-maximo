@@ -1,9 +1,44 @@
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { useForm } from "../hooks/useForm"
+import { useEffect, useState } from "react";
+
 
 export const LoginPage = () => {
   // TODO: Integrar lógica de autenticación aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
+
+    const navigate = useNavigate();
+  const { handleChange, handleReset, formValue } = useForm({
+    username: "",
+    password: "",
+  });
+
+  //Esta función evita que la página se recargue al enviar el formulario
+  const handleSumit = async(e) => {
+    e.preventDefault()
+
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json", 
+          
+        },
+        body: JSON.stringify(formValue),
+        credentials: 'include'
+      });
+
+      if(response.ok) {
+        navigate("/Home")
+      }else {
+        console.log("Credenciales inválidas o incorrectas");
+      }
+    } catch (error) {
+      console.log("Error al iniciar sesión:", error);
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">

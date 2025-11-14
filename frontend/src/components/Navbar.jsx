@@ -1,10 +1,33 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+
 export const Navbar = () => {
   // TODO: Obtener datos del usuario desde /api/profile
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
   // TODO: Manejar errores apropiadamente
 
-  const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  
+  const [userName, setUserName] = useState("Usuario"); // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  const navigate = useNavigate ();
+
+  useEffect(()=> {
+  })
+
+    const handleLogout = async() => {
+      try {
+          const response = await fetch('http://localhost:3000/api/logout', {
+          method: 'POST',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          onLogout();
+          navigate('/login');
+        }
+      } catch (error) {
+      console.log('Errror al cerrar sesión:', error);
+      }
+    }
 
   return (
     <nav className="bg-gray-900 text-white h-16 left-0 right-0 shadow-lg sticky top-0 z-50">
