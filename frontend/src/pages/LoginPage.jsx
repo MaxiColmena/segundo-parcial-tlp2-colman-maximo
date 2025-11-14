@@ -1,7 +1,7 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm"
-import { useEffect, useState } from "react";
+import { Loading } from "../components/Loading";
 
 
 export const LoginPage = () => {
@@ -10,7 +10,7 @@ export const LoginPage = () => {
   // TODO: Implementar función handleSubmit
 
     const navigate = useNavigate();
-  const { handleChange, handleReset, formValue } = useForm({
+  const { handleChange, formValue } = useForm({
     username: "",
     password: "",
   });
@@ -24,7 +24,7 @@ export const LoginPage = () => {
         method: 'POST',
         headers: {
           "Content-Type": "application/json", 
-          
+
         },
         body: JSON.stringify(formValue),
         credentials: 'include'
@@ -55,7 +55,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={handleSumit}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -67,6 +67,8 @@ export const LoginPage = () => {
               type="text"
               id="username"
               name="username"
+              value={formValue.username}
+              onChange={handleChange}
               placeholder="Ingresa tu usuario"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -84,6 +86,8 @@ export const LoginPage = () => {
               type="password"
               id="password"
               name="password"
+              value={formValue.password}
+              onChange={handleChange}
               placeholder="Ingresa tu contraseña"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -92,6 +96,7 @@ export const LoginPage = () => {
 
           <button
             type="submit"
+            disabled={Loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition-colors"
           >
             Ingresar
