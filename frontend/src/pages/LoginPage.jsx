@@ -1,7 +1,8 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm"
 import { Loading } from "../components/Loading";
+import { useState } from "react";
 
 
 export const LoginPage = () => {
@@ -9,15 +10,18 @@ export const LoginPage = () => {
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
 
-    const navigate = useNavigate();
-  const { handleChange, formValue } = useForm({
+  const navigate = useNavigate();
+  const { handleChange, formState } = useForm({
     username: "",
     password: "",
   });
-
+  const [loading, setLoading] = useState(false);
+  
   //Esta función evita que la página se recargue al enviar el formulario
   const handleSumit = async(e) => {
     e.preventDefault()
+
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:3000/api/login', {
@@ -26,18 +30,23 @@ export const LoginPage = () => {
           "Content-Type": "application/json", 
 
         },
-        body: JSON.stringify(formValue),
+        body: JSON.stringify(formState),
         credentials: 'include'
       });
 
       if(response.ok) {
-        navigate("/Home")
+        navigate("/home")
       }else {
         console.log("Credenciales inválidas o incorrectas");
       }
     } catch (error) {
       console.log("Error al iniciar sesión:", error);
+    }finally {
+      setLoading(false);
     }
+  }
+    if (loading) {
+    return <Loading />;
   }
 
   return (
@@ -67,7 +76,7 @@ export const LoginPage = () => {
               type="text"
               id="username"
               name="username"
-              value={formValue.username}
+              value={formState.username}
               onChange={handleChange}
               placeholder="Ingresa tu usuario"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,7 +95,7 @@ export const LoginPage = () => {
               type="password"
               id="password"
               name="password"
-              value={formValue.password}
+              value={formState.password}
               onChange={handleChange}
               placeholder="Ingresa tu contraseña"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -99,6 +108,7 @@ export const LoginPage = () => {
             disabled={Loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition-colors"
           >
+            {loading ? "Cargando..." : "Iniciar Sesión"}
             Ingresar
           </button>
         </form>
